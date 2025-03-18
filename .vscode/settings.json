@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "*.embeddedhtml": "html",
-        "lvgl.h": "c"
+        "lvgl.h": "c",
+        "lv_wayland.h": "c"
     }
 }
