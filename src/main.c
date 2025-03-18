@@ -7,6 +7,7 @@
 #include <pthread.h>
 #include "lvgl/lvgl.h"
 #include "lvgl/src/drivers/wayland/lv_wayland.h"
+#include "examples.h"
 
 #define H_RES (800)
 #define V_RES (600)
@@ -58,11 +59,8 @@ int main(int argc, char **argv)
     LV_LOG_INFO("Setting screen background color");
     lv_obj_set_style_bg_color(lv_screen_active(), lv_color_hex(0x003a57), LV_PART_MAIN);
 
-    // Simple Hello world label
-    lv_obj_t * label = lv_label_create(lv_screen_active());
-    lv_label_set_text(label, "Hello world!");
-    lv_obj_set_style_text_color(lv_screen_active(), lv_color_hex(0xffffff), LV_PART_MAIN);
-    lv_obj_align(label, LV_ALIGN_CENTER, 0, 0);
+    // Demo part. Change called method according to the desired example.
+    simple_label();
 
     pthread_create(&tick_thread_id, NULL, tick_thread, NULL);
 

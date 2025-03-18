@@ -33,7 +33,7 @@ target_sources(lvgl PRIVATE ${WAYLAND_PROTOCOLS_SRC})
 ###############
 ### Wayland: end ###
 ###############
-add_executable(demoLvgl src/main.c)
+add_executable(demoLvgl src/main.c src/examples.c)
 
 target_include_directories(demoLvgl PRIVATE ${PROJECT_SOURCE_DIR}/src ${PROJECT_SOURCE_DIR})
 
