@@ -61,6 +61,7 @@ int main(int argc, char **argv)
 	{
 		LV_LOG_ERROR("Failed to create display");
 		ret = EXIT_FAILURE;
+		goto end;
 	}
 
 	// lv_wayland_window_set_fullscreen(disp, false);
