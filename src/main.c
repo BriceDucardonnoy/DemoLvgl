@@ -70,14 +70,14 @@ int main(int argc, char **argv)
 	lv_obj_set_style_bg_color(lv_screen_active(), lv_color_hex(0x003a57), LV_PART_MAIN);
 
 	// Demo part. Change called method according to the desired example.
-	if (argc == 0)
+	if (argc <= 1)
 	{
 		lv_demos_show_help();
-		simple_label();
+		simple_example();
 	}
 	else
 	{
-		
+		lv_demos_create(&argv[1], argc - 1);
 	}
 
 	pthread_create(&tick_thread_id, NULL, tick_thread, NULL);

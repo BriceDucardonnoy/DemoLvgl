@@ -3,6 +3,6 @@
 
 #include "lvgl/lvgl.h"
 
-extern void simple_label(void);
+extern void simple_example(void);
 
 #endif // _EXAMPLES_H_
