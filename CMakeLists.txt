@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(LV_CONF_PATH ${CMAKE_CURRENT_SOURCE_DIR}/src/lv_conf.h)
 set(LV_CONF_BUILD_DISABLE_EXAMPLES ON)
-set(LV_CONF_BUILD_DISABLE_DEMOS ON)
+set(LV_CONF_BUILD_DISABLE_DEMOS OFF)
 
 find_package(PkgConfig REQUIRED)
 
@@ -37,7 +37,7 @@ add_executable(demoLvgl src/main.c src/examples.c)
 
 target_include_directories(demoLvgl PRIVATE ${PROJECT_SOURCE_DIR}/src ${PROJECT_SOURCE_DIR})
 
-target_link_libraries(demoLvgl PRIVATE lvgl::lvgl)
+target_link_libraries(demoLvgl PRIVATE lvgl::lvgl lvgl_demos)
 target_link_libraries(demoLvgl PRIVATE ${WAYLAND_CLIENT_LIBRARIES} ${WAYLAND_CURSOR_LIBRARIES} ${XKBCOMMON_LIBRARIES})
 
 # Additionnal cmd for Wayland

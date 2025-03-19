@@ -7,19 +7,20 @@
 #include <pthread.h>
 #include "lvgl/lvgl.h"
 #include "lvgl/src/drivers/wayland/lv_wayland.h"
+#include "demos/lv_demos.h"
 #include "examples.h"
 
 #define H_RES (800)
 #define V_RES (600)
 
-static pthread_t tick_thread_id;
+static bool running = true;
+static pthread_t tick_thread_id = 0;
 
 // SIGTERM handler
 static void sigterm_handler(int signum)
 {
     printf("Received SIGTERM\n");
-    pthread_cancel(tick_thread_id);
-    exit(0);
+    running = false;
 }
 
 static void * tick_thread(void * data)
@@ -34,9 +35,17 @@ static void * tick_thread(void * data)
     return NULL;
 }
 
+bool close_cb(lv_display_t *disp)
+{
+	printf("Closing display\n");
+	running = false;
+	return true;
+}
+
 int main(int argc, char **argv)
 {
     printf("Starting...\n");
+	int ret = EXIT_SUCCESS;
 
     // Set SIGTERM handler
     signal(SIGTERM, sigterm_handler);// kill -15 <pid>
@@ -44,13 +53,12 @@ int main(int argc, char **argv)
     // LVGL init
     lv_init();
 
-    // lv_wayland_init();
     /* Create a display */
     LV_LOG_INFO("Creating display");
-    lv_disp_t * disp = lv_wayland_window_create(H_RES, V_RES, "Demo LVGL", NULL);
+    lv_disp_t * disp = lv_wayland_window_create(H_RES, V_RES, "Demo LVGL", close_cb);
     if(disp == NULL) {
         LV_LOG_ERROR("Failed to create display");
-        return 1;
+        ret = EXIT_FAILURE;
     }
 
     // lv_wayland_window_set_fullscreen(disp, false);
@@ -61,15 +69,24 @@ int main(int argc, char **argv)
 
     // Demo part. Change called method according to the desired example.
     simple_label();
+	lv_demos_show_help();
 
     pthread_create(&tick_thread_id, NULL, tick_thread, NULL);
 
     /*Handle LitlevGL tasks (tickless mode)*/
-    while(1) {
+    while(running) {
         // lv_timer_handler();
         lv_wayland_timer_handler();
         usleep(5000);
     }
+
+end:
+    printf("Exiting...\n");
+    lv_deinit();
+	if(tick_thread_id)
+	{
+		pthread_cancel(tick_thread_id);
+	}
     
-    return 0;
+    return ret;
 }
